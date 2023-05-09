@@ -2,15 +2,17 @@ const express=require("express")
 const dotenv = require('dotenv');
 dotenv.config();
 const connection = require('./config/db');
+const cors=require("cors")
 const userRouter=require('./routes/user.routes');
 const app=express()
 app.use(express.json());
-
+app.use(cors({ origin: "*" }));
+app.use(userRouter);
 app.get("/",(req,res)=>{
-    res.send({msg:"Welcome to Fashionhub app"})
+    res.send({msg:"Welcome to fashionhub app"})
 })
 
-app.use(userRouter)
+
 
 
 const port = process.env.PORT;
