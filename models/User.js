@@ -4,7 +4,7 @@ const userSchema=mongoose.Schema(
         name: String,
         email: String,
         password: String,
-        mobile:Number
+        phone:Number
     },{
   versionKey:false
   }
