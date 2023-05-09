@@ -7,9 +7,8 @@ const app=express()
 app.use(express.json());
 const cors = require('cors');
 const corsOptions ={
-    origin:'http://localhost:3000', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
+    origin:'*', 
+    credentials:true,       
 }
 app.use(cors(corsOptions));
 app.use(userRouter);
@@ -17,10 +16,7 @@ app.get("/",(req,res)=>{
     res.send({msg:"Welcome to fashionhub app"})
 })
 
-
-
-
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 app.listen(port,async()=>{
     try{
         await connection
@@ -28,5 +24,5 @@ app.listen(port,async()=>{
     }catch(err) {
         console.log(err);
     }
-    console.log("server is running on 8080");
+    console.log(`server is running on ${port}`);
 })
