@@ -4,8 +4,6 @@ dotenv.config();
 const connection = require('./config/db');
 const cors=require("cors")
 const userRouter=require('./routes/user.routes');
-const bookRouter=require('./routes/book.routes');
-const orderRouter=require('./routes/order.routes');
 const app=express()
 app.use(express.json());
 app.use(cors({ origin: "*" }));
@@ -14,7 +12,7 @@ app.get("/",(req,res)=>{
     res.send({msg:"Welcome to bookstore app"})
 })
 
-app.use(userRouter,bookRouter,orderRouter)
+app.use(userRouter)
 
 
 const port = process.env.PORT;
