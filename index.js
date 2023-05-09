@@ -6,7 +6,7 @@ const cors=require("cors")
 const userRouter=require('./routes/user.routes');
 const app=express()
 app.use(express.json());
-app.use(cors({ origin: "*" }));
+app.use(cors());
 app.use(userRouter);
 app.get("/",(req,res)=>{
     res.send({msg:"Welcome to fashionhub app"})
