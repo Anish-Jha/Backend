@@ -45,4 +45,42 @@ userRouter.post('/login', async (req, res) => {
   }
 });
 
+userRouter.get('/users',async(req,res)=>{
+  try{
+    const user=await User.find();
+    res.status(200).send(user);
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message:"Unable to process the request at the moment."})
+  }
+})
+
+userRouter.get('/users/:id',async(req,res)=>{
+  try{
+    const user=User.findById(req.params.id);
+    res.status(200).send(user);
+  }catch(err){
+    console.log(err);
+    res.status(500).send({message:"Unable to process the request at the moment."})
+  }
+})
+
+userRouter.patch('users/:id',async(req,res)=>{
+  try{
+    const user=User.findByIdAndUpdate(req.params.id,req.body,{new:true});
+    res.status(200).send(user);
+  }catch (error){
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+})
+
+userRouter.delete('users/:id',async(req,res)=>{
+  try{
+    const user=User.findByIdAndDelete(req.params.id,req.body,{new:true});
+    res.status(202).send({ message: 'Book deleted successfully' });
+  }catch(err){
+    console.log(err);
+  }
+})
 module.exports = userRouter;
