@@ -7,7 +7,11 @@ const productRouter=require('./routes/product.routes')
 const app=express()
 app.use(express.json());
 const cors = require('cors');
-app.use(cors());
+const corsOptions ={
+    origin:'*', 
+    credentials:true,       
+}
+app.use(cors(corsOptions));
 app.use(userRouter,productRouter);
 app.get("/",(req,res)=>{
     res.send({msg:"Welcome to fashionhub app"})
