@@ -20,7 +20,6 @@ productRouter.get('/product',async(req,res)=>{
         const products=await Product.find(filters).sort(sort);
         res.status(200).send(products);
     }catch(err){
-        console.log(err);
         res.status(500).send({message:'Unable to process the request at the moment'})
     }
 })
@@ -30,7 +29,6 @@ productRouter.get('/product/:id',async(req,res)=>{
         const products=await Product.findById(req.params.id);
         res.status(200).send(products);
     }catch(err){
-        console.log(err);
         res.status(500).send({message:'Unable to process the request at the moment'})
     }
 })
