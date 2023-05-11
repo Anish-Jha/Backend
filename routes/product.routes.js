@@ -1,0 +1,28 @@
+const express=require('express');
+require("dotenv").config();
+const Product=require('../models/Product');
+const productRouter=express.Router();
+
+productRouter.get('/product',async(req,res)=>{
+    try{
+        const products=await Product.find();
+        res.status(200).send(products);
+    }catch(err){
+        console.log(err);
+        res.status(500).send({message:'Unable to process the request at the moment'})
+    }
+})
+
+// productRouter.post('/addproduct',async(req,res)=>{
+//     try{
+//        const products= new Product(req.body);
+//        await products.save();
+//        res.status(201).send(products);
+//     }catch(err){
+//         console.log(err);
+//         res.status(500).send({message:'Unable to process the request at the moment'})
+//     }
+// })
+
+
+module.exports=productRouter;

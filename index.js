@@ -3,15 +3,12 @@ const dotenv = require('dotenv');
 dotenv.config();
 const connection = require('./config/db');
 const userRouter=require('./routes/user.routes');
+const productRouter=require('./routes/product.routes')
 const app=express()
 app.use(express.json());
 const cors = require('cors');
-const corsOptions ={
-    origin:'*', 
-    credentials:true,       
-}
-app.use(cors(corsOptions));
-app.use(userRouter);
+app.use(cors());
+app.use(userRouter,productRouter);
 app.get("/",(req,res)=>{
     res.send({msg:"Welcome to fashionhub app"})
 })
