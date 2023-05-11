@@ -7,10 +7,17 @@ productRouter.get('/product',async(req,res)=>{
     try{
     let filters = {};
     const category=req.query.category;
+    const sortBy=req.query.sortBy;
+    let sort = {};
     if(category){
         filters.category=category;
     }
-        const products=await Product.find(filters);
+    if (sortBy === "priceLowToHigh") {
+        sort.price = 1;
+    } else if (sortBy === "priceHighToLow") {
+        sort.price = -1;
+    }
+        const products=await Product.find(filters).sort(sort);
         res.status(200).send(products);
     }catch(err){
         console.log(err);
