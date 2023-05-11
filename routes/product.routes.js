@@ -5,7 +5,12 @@ const productRouter=express.Router();
 
 productRouter.get('/product',async(req,res)=>{
     try{
-        const products=await Product.find();
+    let filters = {};
+    const category=req.query.category;
+    if(category){
+        filters.category=category;
+    }
+        const products=await Product.find(filters);
         res.status(200).send(products);
     }catch(err){
         console.log(err);
