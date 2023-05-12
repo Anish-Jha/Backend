@@ -1,25 +1,19 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-
-const auth = (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(' ')[1];
+const jwt=require('jsonwebtoken')
+require("dotenv").config();
+const auth=(req,res,next)=>{
+    const token=req.headers.authorization.split(" ")[1]
     if (token) {
-      const decoded = jwt.verify(token, process.env.key);
-      if (decoded.userID) {
+      const decoded = jwt.verify(token, `${process.env.Key}`);
+      if (decoded) {
         req.body.userID = decoded.userID;
-        req._id = decoded.userID;
+        req._id=decoded.userID
         next();
       } else {
-        throw new Error('Invalid token');
+        res.status(400).send({ msg: "Please Login first" });
       }
     } else {
-      throw new Error('Authorization token not found');
+      res.status(400).send({ msg: "Please Login first" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(401).send({ message: 'Unauthorized access' });
-  }
-};
+}
 
-module.exports = auth;
+module.exports=auth;

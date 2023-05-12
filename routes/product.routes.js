@@ -33,16 +33,15 @@ productRouter.get('/product/:id',async(req,res)=>{
     }
 })
 
-// productRouter.post('/addproduct',async(req,res)=>{
-//     try{
-//        const products= new Product(req.body);
-//        await products.save();
-//        res.status(201).send(products);
-//     }catch(err){
-//         console.log(err);
-//         res.status(500).send({message:'Unable to process the request at the moment'})
-//     }
-// })
+productRouter.post('/addproduct',async(req,res)=>{
+    try{
+       const products= new Product(req.body);
+       await products.save();
+       res.status(201).send(products);
+    }catch(err){
+        res.status(500).send({message:'Unable to process the request at the moment'})
+    }
+})
 
 
 module.exports=productRouter;

@@ -1,86 +1,13 @@
-const User = require('../models/User');
-const express = require('express');
-const jwt = require("jsonwebtoken");
-const auth=require('../middleware/auth.middlewares')
-const bcrypt = require("bcrypt");
-require("dotenv").config();
+const express=require('express')
+const { register, users, login, deleteUser, updateUser, getUser }=require('../controllers/user.controllers')
+const auth = require('../middleware/auth.middlewares')
 const userRouter=express.Router()
 
-userRouter.post('/register', async (req, res) => {
-  const { name, email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (user) {
-      return res.status(200).send({ msg: "User already exists, please login to continue" });
-    }
-    bcrypt.hash(password, 3, async (err, hash) => {
-      const newUser = new User({
-        name,
-        email,
-        password: hash,
-      });
-      await newUser.save();
-      res.status(201).send({ msg: "Registration Successfull" });
-    });
-  } catch (err) {
-    res.status(400).send({ msg: err.message });
-  }
-});
+userRouter.get('/users',auth,users)
+userRouter.get('/users/:userID',auth,getUser)
+userRouter.patch('/update/:userID',auth,updateUser)
+userRouter.delete('/delete/:userID',auth,deleteUser)
+userRouter.post('/register',register)
+userRouter.post('/login',login)
 
-userRouter.post('/login', async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
-  if (user) {
-    bcrypt.compare(password, user.password,(err,result) => {
-      if (result){
-        res.status(201).send({
-          msg: "Login Succussfull!",
-          token: jwt.sign({ userID: user._id }, `${process.env.key}`),
-        });
-      } else {
-        res.status(400).send({ msg: "Invalid Credentials" });
-      }
-    });
-  } else {
-    res.status(400).send({ msg: "To login, you'll have to register first!" });
-  }
-});
-
-userRouter.get('/users',auth,async(req,res)=>{
-  try{
-    const user=await User.find();
-    res.status(200).send(user);
-  }catch(error){
-    console.log(error);
-    res.status(500).send({message:"Unable to process the request at the moment."})
-  }
-})
-
-userRouter.get('/users/:id',auth,async(req,res)=>{
-  try{
-    const user=await User.findById(req.params.id);
-    res.status(200).send(user);
-  }catch(err){
-    res.status(500).send({message:"Unable to process the request at the moment."})
-  }
-})
-
-userRouter.patch('users/:id',async(req,res)=>{
-  try{
-    const user=User.findByIdAndUpdate(req.params.id,req.body,{new:true});
-    res.status(200).send(user);
-  }catch (error){
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
-    }
-})
-
-userRouter.delete('users/:id',async(req,res)=>{
-  try{
-    const user=User.findByIdAndDelete(req.params.id,req.body,{new:true});
-    res.status(202).send({ message: 'Book deleted successfully' });
-  }catch(err){
-    console.log(err);
-  }
-})
-module.exports = userRouter;
+module.exports=userRouter
