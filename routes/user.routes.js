@@ -10,7 +10,7 @@ userRouter.post('/register', async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(200).send({ msg: "User already exista, please login to continue" });
+      return res.status(200).send({ msg: "User already exists, please login to continue" });
     }
     bcrypt.hash(password, 3, async (err, hash) => {
       const newUser = new User({
@@ -31,7 +31,7 @@ userRouter.post('/login', async (req, res) => {
   const user = await User.findOne({ email });
   if (user) {
     bcrypt.compare(password, user.password,(err,result) => {
-      if (result) {
+      if (result){
         res.status(201).send({
           msg: "Login Succussfull!",
           token: jwt.sign({ userID: user._id }, `${process.env.key}`),
@@ -57,10 +57,9 @@ userRouter.get('/users',async(req,res)=>{
 
 userRouter.get('/users/:id',async(req,res)=>{
   try{
-    const user=User.findById(req.params.id);
+    const user=await User.findById(req.params.id);
     res.status(200).send(user);
   }catch(err){
-    console.log(err);
     res.status(500).send({message:"Unable to process the request at the moment."})
   }
 })
