@@ -2,6 +2,7 @@ const User = require('../models/User');
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const auth=require('../middleware/Auth')
 require("dotenv").config();
 const userRouter=express.Router()
 
@@ -45,7 +46,7 @@ userRouter.post('/login', async (req, res) => {
   }
 });
 
-userRouter.get('/users',async(req,res)=>{
+userRouter.get('/users',auth,async(req,res)=>{
   try{
     const user=await User.find();
     res.status(200).send(user);
@@ -55,7 +56,7 @@ userRouter.get('/users',async(req,res)=>{
   }
 })
 
-userRouter.get('/users/:id',async(req,res)=>{
+userRouter.get('/users/:id',auth,async(req,res)=>{
   try{
     const user=await User.findById(req.params.id);
     res.status(200).send(user);
