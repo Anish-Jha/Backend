@@ -56,15 +56,34 @@ userRouter.get('/users',auth,async(req,res)=>{
   }
 })
 
-userRouter.get('/users/:id',async(req,res)=>{
-  try{
-    const user=await User.findById(req.params.id);
-    res.status(200).send(user);
-  }catch(err){
-    console.log(err);
-    res.status(500).send({message:"Unable to process the request at the moment."})
+// userRouter.get('/users/:id',async(req,res)=>{
+//   try{
+//     const user=await User.findById(req.params.id);
+//     res.status(200).send(user);
+//   }catch(err){
+//     console.log(err);
+//     res.status(500).send({message:"Unable to process the request at the moment."})
+//   }
+// })
+
+userRouter.get('/users/:userId?', auth, async (req, res) => {
+  try {
+    const userId = req.params.userId || req.body.userID;
+    if (userId) {
+      const user = await User.findOne({ _id: userId });
+      if (user) {
+        res.status(200).send(user);
+      } else {
+        res.status(404).send({ message: 'User not found' });
+      }
+    } else {
+      res.status(400).send({ message: 'Missing user ID' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: 'Unable to process the request at the moment.' });
   }
-})
+});
+
 
 userRouter.patch('users/:id',async(req,res)=>{
   try{
