@@ -9,13 +9,12 @@ console.log(process.env.JWT)
 app.use(express.json());
 const cors = require('cors');
 const homeRouter = require("./routes/home.routes");
-const cartRouter = require("./routes/cart.routes");
 const corsOptions ={
     origin:'*', 
     credentials:true,       
 }
 app.use(cors(corsOptions));
-app.use(userRouter,productRouter,homeRouter,cartRouter);
+app.use(userRouter,productRouter,homeRouter);
 app.get("/",(req,res)=>{
     res.send({msg:"Welcome to fashionhub app"})
 })
