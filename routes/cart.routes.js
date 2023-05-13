@@ -5,7 +5,7 @@ const cartRouter=express.Router();
 cartRouter.post('/addtocart', auth, async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-    const user = await User.findById({_id:req.body.userID});
+    const users = await User.findById({_id:req.body});
     const product = await Product.findById(productId);
     const existingItem = user.cart.find(
       (item) => item.product.toString() === productId
@@ -14,12 +14,12 @@ cartRouter.post('/addtocart', auth, async (req, res) => {
     if (existingItem) {
       res.send({message:'Already added to cart'})
     } else {
-      user.cart.push({
+      users.cart.push({
         product: product._id,
         quantity: quantity
       });
     }
-    await user.save();
+    await users.save();
     res.json({ success: true });
   } catch (error) {
     console.error(error);
