@@ -12,25 +12,21 @@ cartRouter.post('/addtocart/', async (req, res) => {
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
-
-      const cart = await Cart.findOne({ user: user._id, 'products.product': productId });
+      const cart = await Cart.findOne({ user: user._id, 'items.product': productId });
       if (cart) {
         await Cart.findOneAndUpdate(
-          { user: user._id, 'products.product': productId },
-          { $inc: { 'products.$.quantity': 1 } }
+          { user: user._id, 'items.product': productId },
+          { $inc: { 'items.$.quantity': 1 } }
         );
       } else {
         await Cart.findOneAndUpdate(
           { user: user._id },
-          { $push: { products: { product: productId, quantity: 1 } } },
+          { $push: { items: { product: productId, quantity: 1 } } },
           { upsert: true }
         );
       }
-  
-      res.status(201).json({ message: 'Added to cart' });
-    } catch (err) {
+    }catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
-    }
-  });
+}});
   
