@@ -46,7 +46,7 @@ userRouter.post('/login', async (req, res) => {
   }
 });
 
-userRouter.get('/users',auth,async(req,res)=>{
+userRouter.get('/allusers',auth,async(req,res)=>{
   try{
     const user=await User.find();
     res.status(200).send(user);
@@ -56,19 +56,15 @@ userRouter.get('/users',auth,async(req,res)=>{
   }
 })
 
-userRouter.get('/users/:userId', auth, async (req, res) => {
-  try {
-    const userId = req.params.userId;
-    const user = await User.findOne({ _id: userId });
-    if (user) {
-      res.status(200).send(user);
-    } else {
-      res.status(404).send({ message: 'User not found' });
-    }
-  } catch (error) {
-    res.status(500).send({ message: 'Unable to process the request at the moment.' });
+userRouter.get('/users',auth,async(req,res)=>{
+  try{
+    const user=await User.findOne({_id:req.body.userID});
+    res.status(200).send(user);
+  }catch(error){
+    console.log(error);
+    res.status(500).send({message:"Unable to process the request at the moment."})
   }
-});
+})
 
 
 
