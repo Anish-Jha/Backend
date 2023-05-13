@@ -6,16 +6,16 @@ cartRouter.post('/addtocart', auth, async (req, res) => {
   try {
     const { productId, quantity } = req.body;
     const users = await User.findById({_id:req.body});
-    const product = await Product.findById(productId);
+    const products = await Product.findById(productId);
     const existingItem = user.cart.find(
-      (item) => item.product.toString() === productId
+      (item) => item.products.toString() === productId
     );
 
     if (existingItem) {
       res.send({message:'Already added to cart'})
     } else {
       users.cart.push({
-        product: product._id,
+        product: products._id,
         quantity: quantity
       });
     }
