@@ -2,7 +2,7 @@ const User = require('../models/User');
 const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const auth = require('../middleware/auth');
+const auth=require('../middleware/auth.middleware')
 require("dotenv").config();
 const userRouter=express.Router()
 
@@ -35,7 +35,7 @@ userRouter.post('/login', async (req, res) => {
       if (result) {
         res.status(201).send({
           msg: "Login Succussfull!",
-          token: jwt.sign({ userID: user._id }, `${process.env.key}`),
+          token: jwt.sign({ userID: user._id }, `${process.env.JWT}`),
         });
       } else {
         res.status(400).send({ msg: "Invalid Credentials" });

@@ -5,7 +5,7 @@ const connection = require('./config/db');
 const userRouter=require('./routes/user.routes');
 const productRouter=require('./routes/product.routes')
 const app=express()
-console.log(process.env.KEY)
+console.log(process.env.JWT)
 app.use(express.json());
 const cors = require('cors');
 const corsOptions ={
