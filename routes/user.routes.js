@@ -66,8 +66,6 @@ userRouter.get('/users',auth,async(req,res)=>{
   }
 })
 
-
-
 userRouter.patch('users/:id',async(req,res)=>{
   try{
     const user=User.findByIdAndUpdate(req.params.id,req.body,{new:true});
