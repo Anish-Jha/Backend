@@ -4,7 +4,7 @@ const Product=require('../models/Product');
 const auth=require('../middleware/auth.middleware')
 const cartRouter = express.Router();
 
-cartRouter.post('/addtocart/', auth, async (req, res) => {
+cartRouter.post('/addtocart/', async (req, res) => {
     try {
       const productId = req.body.id;
       const user = req.user;
@@ -12,7 +12,7 @@ cartRouter.post('/addtocart/', auth, async (req, res) => {
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
-      
+
       const cart = await Cart.findOne({ user: user._id, 'products.product': productId });
       if (cart) {
         await Cart.findOneAndUpdate(
