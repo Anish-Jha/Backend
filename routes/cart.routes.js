@@ -6,7 +6,7 @@ const auth = require('../middleware/auth.middleware');
 // Add a product to the cart
 cartRouter.post('/addtocart', auth, async (req, res) => {
   try {
-    const { product_id, product, quantity } = req.body;
+    const { product_id, productData, quantity } = req.body;
     const userID = req.body.userID; // Assuming you have a middleware to set the user ID in req.user
 
     // Check if the product is already in the user's cart
@@ -18,7 +18,7 @@ cartRouter.post('/addtocart', auth, async (req, res) => {
     // Create a new cart item
     const cartItem = new Cart({
       product_id,
-      product,
+      productData,
       quantity,
       userID,
     });

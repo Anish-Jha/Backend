@@ -6,7 +6,7 @@ const cartSchema = mongoose.Schema({
     required: true,
     index: true, // Add index for faster lookup
   },
-  product: {
+  productData: {
     image: String,
     subhead: String,
     name: String,
