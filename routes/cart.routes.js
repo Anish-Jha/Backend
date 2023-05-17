@@ -5,12 +5,12 @@ const Cart = require('../models/Cart');
 // Add a product to the cart
 cartRouter.post('/addtocart', async (req, res) => {
     try {
-      const { userId, productId, quantity, price, total } = req.body;
+      const { userID, productId, quantity, price, total } = req.body;
   
       // Find the cart for the user or create a new one
       const carts = await Cart.findOneAndUpdate(
-        { userId },
-        { $setOnInsert: { userId, items: [] } },
+        { userID },
+        { $setOnInsert: { userID, items: [] } },
         { upsert: true, new: true }
       );
   
