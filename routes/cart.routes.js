@@ -3,7 +3,7 @@ const cartRouter = express.Router();
 const Cart = require('../models/Cart');
 
 // Add a product to the cart
-cartRouter.post('/', async (req, res) => {
+cartRouter.post('/addtocart', async (req, res) => {
   try {
     const { userId, productId, quantity, price, total } = req.body;
 
