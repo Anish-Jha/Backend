@@ -1,9 +1,9 @@
 const express = require('express');
 const cartRouter = express.Router();
 const Cart = require('../models/Cart');
-
+const auth=require('../middleware/auth.middleware')
 // Add a product to the cart
-cartRouter.post('/addtocart', async (req, res) => {
+cartRouter.post('/addtocart',auth, async (req, res) => {
     try {
       const { userID, productId, quantity, price, total } = req.body;
   
