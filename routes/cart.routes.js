@@ -48,3 +48,4 @@ cartRouter.post('/addtocart',auth, async (req, res) => {
 });
 
 module.exports = cartRouter;
+
