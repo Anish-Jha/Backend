@@ -1,7 +1,6 @@
 const express = require('express');
 const cartRouter = express.Router();
 const Cart = require('../models/Cart');
-const Product = require('../models/Product');
 const User = require('../models/User');
 
 // Add a product to the cart
