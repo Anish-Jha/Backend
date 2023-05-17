@@ -5,7 +5,7 @@ const auth=require('../middleware/auth.middleware')
 // Add a product to the cart
 cartRouter.post('/addtocart',auth, async (req, res) => {
     try {
-      const { userID, productId, quantity, price, total } = req.body;
+      const { userID, productId, quantity } = req.body;
   
       // Find the cart for the user or create a new one
       const carts = await Cart.findOneAndUpdate(
