@@ -8,30 +8,29 @@ cartRouter.post('/addtocart', async (req, res) => {
     const { userId, productId, quantity, price, total } = req.body;
 
     // Find the cart for the user
-    let cart = await Cart.findOne({ userId });
+    let carts = await Cart.findOne({ userId });
 
     // If the cart doesn't exist, create a new one
-    if (!cart) {
-      cart = new Cart({
+    if (!carts) {
+      carts = new Cart({
         userId,
         items: [],
       });
     }
 
     // Check if the product is already in the cart
-    const existingItemIndex = cart.items.findIndex((item) => item.productId === productId);
+    const existingItemIndex = carts.items.findIndex((item) => item.productId === productId);
 
     if (existingItemIndex > -1) {
       // Update the quantity and total of the existing item
-      cart.items[existingItemIndex].quantity += quantity;
-      cart.items[existingItemIndex].total += total;
+      carts.items[existingItemIndex].quantity += quantity;
+      carts.items[existingItemIndex].total += total;
     } else {
       // Add the new item to the cart
-      cart.items.push({ productId, quantity, price, total });
+      carts.items.push({ productId, quantity, price, total });
     }
 
-    await cart.save();
-
+    await carts.save();
     res.status(201).json({ message: 'Product added to cart successfully' });
   } catch (error) {
     console.error(error);
