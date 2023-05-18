@@ -45,9 +45,9 @@ cartRouter.get('/getcart', auth, async (req, res) => {
 
 cartRouter.delete('/removefromcart/:id', auth, async (req, res) => {
   try {
-    const cartItemId = req.params.id;
+    const id = req.params.id;
     const userID = req.body.userID;
-    await Cart.findOneAndDelete({ _id: cartItemId, userID });
+    await Cart.findOneAndDelete({ _id: id, userID });
     res.status(200).json({ message: 'Item removed from cart successfully' });
   } catch (error) {
     console.error(error);
