@@ -19,7 +19,7 @@ cartRouter.post('/addtocart', auth, async (req, res) => {
     const cartItem = new Cart({
       product_id,
       product,
-      quantity:1,
+      quantity,
       userID,
     });
 
