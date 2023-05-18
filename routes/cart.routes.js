@@ -55,4 +55,24 @@ cartRouter.delete('/removefromcart/:id', auth, async (req, res) => {
   }
 });
 
+cartRouter.patch('/updatecart/:id', auth, async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userID = req.body.userID;
+    const { quantity } = req.body;
+    const cartItem = await Cart.findOneAndUpdate(
+      { _id: id, userID },
+      { quantity }
+    );
+    if (!cartItem) {
+      return res.status(404).json({ message: 'Cart item not found' });
+    }
+    res.status(200).json({ message: 'Cart item updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 module.exports = cartRouter;
