@@ -32,4 +32,15 @@ cartRouter.post('/addtocart', auth, async (req, res) => {
   }
 });
 
+cartRouter.get('/getcart', auth, async (req, res) => {
+  try {
+    const userID = req.body.userID;
+    const cartItems = await Cart.find({ userID });
+    res.status(200).json(cartItems);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 module.exports = cartRouter;
