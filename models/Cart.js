@@ -7,13 +7,9 @@ const cartSchema = mongoose.Schema({
     index: true, // Add index for faster lookup
   },
   product: {
-    image: String,
-    subhead: String,
-    name: String,
-    price: Number,
-    category: String,
-    description: String,
-    discount: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
+    required: true,
   },
   quantity: {
     type: Number,
