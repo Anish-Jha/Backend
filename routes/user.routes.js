@@ -3,6 +3,7 @@ const express = require('express');
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const auth=require('../middleware/auth.middleware')
+const admin=require('../middleware/admin.middleware')
 require("dotenv").config();
 const userRouter=express.Router()
 
@@ -60,7 +61,7 @@ userRouter.post('/admin/login', async (req, res) => {
 });
 
 
-userRouter.get('/allusers',adminAuth,async(req,res)=>{
+userRouter.get('/allusers',admin,async(req,res)=>{
   try{
     const user=await User.find();
     res.status(200).send(user);
@@ -80,7 +81,7 @@ userRouter.get('/users',auth,async(req,res)=>{
   }
 })
 
-userRouter.patch('users/:id',adminAuth,async(req,res)=>{
+userRouter.patch('users/:id',admin,async(req,res)=>{
   try{
     const user=User.findByIdAndUpdate(req.params.id,req.body,{new:true});
     res.status(200).send(user);
@@ -90,7 +91,7 @@ userRouter.patch('users/:id',adminAuth,async(req,res)=>{
     }
 })
 
-userRouter.delete('users/:id',adminAuth,async(req,res)=>{
+userRouter.delete('users/:id',admin,async(req,res)=>{
   try{
     const user=User.findByIdAndDelete(req.params.id,req.body,{new:true});
     res.status(202).send({ message: 'Book deleted successfully' });

@@ -1,7 +1,7 @@
 const express=require('express');
 require("dotenv").config();
 const Product=require('../models/Product');
-const adminAuth = require('../middleware/adminAuth.middleware');
+const admin = require('../middleware/admin.middleware');
 const productRouter=express.Router();
 
 productRouter.get('/product',async(req,res)=>{
@@ -34,7 +34,7 @@ productRouter.get('/product/:id',async(req,res)=>{
     }
 })
 
-productRouter.post('/addproduct',adminAuth,async(req,res)=>{
+productRouter.post('/addproduct',admin,async(req,res)=>{
     try{
        const products= new Product(req.body);
        await products.save();
@@ -44,7 +44,7 @@ productRouter.post('/addproduct',adminAuth,async(req,res)=>{
     }
 })
 
-productRouter.patch('/product/edit/:id',adminAuth, async (req, res) => {
+productRouter.patch('/product/edit/:id',admin, async (req, res) => {
     try {
       const id = req.params.id;
       const products = await Product.findByIdAndUpdate(id,req.body,
@@ -57,7 +57,7 @@ productRouter.patch('/product/edit/:id',adminAuth, async (req, res) => {
   });
   
 // Deleting a Product
-productRouter.delete('/product/delete/:id',adminAuth, async (req, res) => {
+productRouter.delete('/product/delete/:id',admin, async (req, res) => {
     try{
       const id = req.params.id;
       await Product.findByIdAndDelete(id);
