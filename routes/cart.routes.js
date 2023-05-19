@@ -2,7 +2,7 @@ const express = require('express');
 const cartRouter = express.Router();
 const Cart = require('../models/Cart');
 const auth = require('../middleware/auth.middleware');
-
+const Order = require('../models/Order');
 // Add a product to the cart
 cartRouter.post('/addtocart', auth, async (req, res) => {
   try {
@@ -74,5 +74,24 @@ cartRouter.patch('/updatecart/:id', auth, async (req, res) => {
   }
 });
 
+cartRouter.delete('/emptycart/:userId', auth, async (req, res) => {
+  try {
+    const userID = req.body.userID;
+    const cartItems = await Cart.find({ userID: userID });
+    const orders = cartItems.map((cartItem) => ({
+      product: cartItem.product,
+      quantity: cartItem.quantity,
+      userID: cartItem.userID,
+    }));
+
+    await Order.insertMany(orders);
+    await Cart.deleteMany({ userID: userID });
+
+    res.status(200).json({ message: 'Cart emptied successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 module.exports = cartRouter;
