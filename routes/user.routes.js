@@ -46,7 +46,21 @@ userRouter.post('/login', async (req, res) => {
   }
 });
 
-userRouter.get('/allusers',auth,async(req,res)=>{
+userRouter.post('/admin/login', async (req, res) => {
+  const { email, password } = req.body;
+  if (email === 'admin@example.com' && password === 'adminpassword') {
+    const token = jwt.sign({ isAdmin: true }, `${process.env.JWT}`);
+    res.status(201).send({
+      msg: "Admin Login Successful!",
+      token: token
+    });
+  } else {
+    res.status(400).send({ msg: "Invalid Admin Credentials" });
+  }
+});
+
+
+userRouter.get('/allusers',adminAuth,async(req,res)=>{
   try{
     const user=await User.find();
     res.status(200).send(user);
@@ -66,7 +80,7 @@ userRouter.get('/users',auth,async(req,res)=>{
   }
 })
 
-userRouter.patch('users/:id',async(req,res)=>{
+userRouter.patch('users/:id',adminAuth,async(req,res)=>{
   try{
     const user=User.findByIdAndUpdate(req.params.id,req.body,{new:true});
     res.status(200).send(user);
@@ -76,7 +90,7 @@ userRouter.patch('users/:id',async(req,res)=>{
     }
 })
 
-userRouter.delete('users/:id',async(req,res)=>{
+userRouter.delete('users/:id',adminAuth,async(req,res)=>{
   try{
     const user=User.findByIdAndDelete(req.params.id,req.body,{new:true});
     res.status(202).send({ message: 'Book deleted successfully' });
