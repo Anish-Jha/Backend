@@ -43,5 +43,29 @@ productRouter.post('/addproduct',async(req,res)=>{
     }
 })
 
+productRouter.patch('/product/edit/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const products = await Product.findByIdAndUpdate(id,req.body,
+        { new: true });
+      res.status(201).send(products);
+    } catch (error){
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  });
+  
+// Deleting a Product
+productRouter.delete('/product/delete/:id', async (req, res) => {
+    try{
+      const id = req.params.id;
+      await Product.findByIdAndDelete(id);
+      res.status(200).send({ message: 'Product deleted successfully' });
+    }catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server error' });
+    }
+});
+
 
 module.exports=productRouter;
