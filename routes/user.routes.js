@@ -49,7 +49,7 @@ userRouter.post('/login', async (req, res) => {
 
 userRouter.post('/admin/login', async (req, res) => {
   const { email, password } = req.body;
-  if (email === 'admin@example.com' && password === 'adminpassword') {
+  if (email === 'admin@batman.com' && password === 'BruceWayne') {
     const token = jwt.sign({ isAdmin: true }, `${process.env.JWT}`);
     res.status(201).send({
       msg: "Admin Login Successful!",
