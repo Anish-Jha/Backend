@@ -1,45 +1,27 @@
 const express = require('express');
 const Order = require('../models/Order');
-
+const admin=require('../middleware/admin.middleware')
 const orderRouter = express.Router();
 
-// Get all orders for a user
-orderRouter.get('/orders',auth, async (req, res) => {
+orderRouter.get('/orders',admin,async(req,res)=>{
+  try{
+      const orders=await Order.find();
+      res.status(200).send(orders);
+  }catch(err){
+      res.status(500).send({message:'Unable to process the request at the moment'})
+  }
+})
+
+orderRouter.get('/orders/:userID',admin, async (req, res) => {
   try {
-    const orders = await Order.find({ userId: req.user._id });
+    const userID = req.params.userID;
+    const orders = await Order.find({userID});
     res.status(200).send(orders);
   } catch (error) {
-    res.status(500).send({ message: 'Unable to process the request at the moment.' });
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
-// Add a new order
-orderRouter.post('/orders',auth, async (req, res) => {
-  try {
-    const { productId, quantity } = req.body;
-    const order = new Order({
-      userId: req.user._id,
-      productId,
-      quantity,
-    });
-    await order.save();
-    res.status(201).send(order);
-  } catch (error) {
-    res.status(500).send({ message: 'Unable to process the request at the moment.' });
-  }
-});
-
-// Delete an order
-orderRouter.delete('/orders/:id',auth, async (req, res) => {
-  try {
-    const order = await Order.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
-    if (!order) {
-      return res.status(404).send({ message: 'Order not found.' });
-    }
-    res.status(200).send({ message: 'Order deleted successfully.' });
-  } catch (error) {
-    res.status(500).send({ message: 'Unable to process the request at the moment.' });
-  }
-});
 
 module.exports = orderRouter;
