@@ -13,6 +13,15 @@ orderRouter.get('/orders',admin,async(req,res)=>{
   }
 })
 
+orderRouter.get('/orderlist',auth,async(req,res)=>{
+  try{
+      const orders=await Order.find();
+      res.status(200).send(orders);
+  }catch(err){
+      res.status(500).send({message:'Unable to process the request at the moment'})
+  }
+})
+
 orderRouter.get('/orders/:userID',auth, async (req, res) => {
   try {
     const userID = req.params.userID;
