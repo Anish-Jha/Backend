@@ -1,6 +1,7 @@
 const express = require('express');
 const Order = require('../models/Order');
 const admin=require('../middleware/admin.middleware')
+const auth=require('../middleware/auth.middleware')
 const orderRouter = express.Router();
 
 orderRouter.get('/orders',admin,async(req,res)=>{
@@ -12,7 +13,7 @@ orderRouter.get('/orders',admin,async(req,res)=>{
   }
 })
 
-orderRouter.get('/orders/:userID',admin, async (req, res) => {
+orderRouter.get('/orders/:userID',auth, async (req, res) => {
   try {
     const userID = req.params.userID;
     const orders = await Order.find({userID});
