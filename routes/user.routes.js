@@ -73,7 +73,8 @@ userRouter.get('/allusers',admin,async(req,res)=>{
 
 userRouter.get('/users',auth,async(req,res)=>{
   try{
-    const user=await User.findOne({_id:req.body.userID});
+    console.log(req,'redfgg');
+    const user=await User.findOne({_id:req._id});
     res.status(200).send(user);
   }catch(error){
     console.log(error);
